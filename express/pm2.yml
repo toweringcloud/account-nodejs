@@ -1,0 +1,5 @@
+apps:
+    - name: "account-api"
+      script: "main.js"
+      exec_mode: "cluster"
+      instances: 0

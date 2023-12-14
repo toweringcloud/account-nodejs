@@ -1,0 +1,18 @@
+COMMON: &common
+    DEBUG: false
+    TESTING: false
+    MONGO_ID: "{...}"
+    MONGO_PW: "{...}"
+    MONGO_DB: "{...}"
+    MONGO_POOL: 100
+    REMOTE_ACCESS_IP: "{...}"
+    JWT_ACCESS_TOKEN_SECRET: "{...}"
+
+LOC: &loc
+    <<: *common
+    DEBUG: false
+    TESTING: true
+    MONGO_HOST: "{...}"
+    MONGO_PORT: 47017
+    LOCAL_HOST: "0.0.0.0"
+    LOCAL_PORT: 50900

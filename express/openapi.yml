@@ -1,0 +1,411 @@
+openapi: 3.0.0
+info:
+    title: "account api"
+    description: "user sign-up & sign-in api service using express framework"
+    version: 0.1.0
+servers:
+    - url: /v1
+paths:
+    /clients:
+        post:
+            tags:
+                - client
+            summary: "[C] add client info"
+            security: []
+            operationId: addClient
+            x-swagger-router-controller: ClientController
+            requestBody:
+                description: "client info"
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Client"
+                        examples:
+                            user:
+                                summary: "user type"
+                                value:
+                                    clientId: "user1"
+                                    clientPw: "q1w2e3R$"
+                                    clientName: "유저1"
+                                    clientType: "U"
+                            service:
+                                summary: "service type"
+                                value:
+                                    clientId: "service1"
+                                    clientPw: "Q!w2e3r4"
+                                    clientName: "서비스1"
+                                    clientType: "S"
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Default"
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+        get:
+            tags:
+                - client
+            summary: "[R] search client list"
+            security: []
+            operationId: searchClients
+            x-swagger-router-controller: ClientController
+            parameters:
+                - in: query
+                  name: list
+                  schema:
+                      type: string
+                      enum: ["Y", "N"]
+                  description: "query client list or specific client info"
+                  required: true
+                - in: query
+                  name: clientId
+                  schema:
+                      type: string
+                  description: "client id"
+                  required: false
+                - in: query
+                  name: offset
+                  schema:
+                      type: integer
+                      minimum: 1
+                      maximum: 991
+                  description: "The number of items to skip before starting to collect the result set"
+                - in: query
+                  name: limit
+                  schema:
+                      type: integer
+                      minimum: 10
+                      maximum: 1000
+                  description: "The numbers of items to return"
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/DefaultList"
+                                x-content-type: application/json
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+    /clients/{docId}:
+        put:
+            tags:
+                - client
+            summary: "[U] modify client info"
+            security: []
+            operationId: modifyClient
+            x-swagger-router-controller: ClientController
+            parameters:
+                - in: path
+                  name: docId
+                  schema:
+                      type: string
+                      pattern: "^[a-z0-9]{24}$"
+                  description: "alphanumeric chracters of 24 bytes"
+                  required: true
+            requestBody:
+                description: "client info"
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Client"
+                        examples:
+                            user:
+                                summary: "user type"
+                                value:
+                                    clientId: "user1"
+                                    clientPw: "q1w2e3R$"
+                                    clientName: "유저1"
+                                    clientType: "U"
+                            service:
+                                summary: "service type"
+                                value:
+                                    clientId: "service1"
+                                    clientPw: "Q!w2e3r4"
+                                    clientName: "서비스1"
+                                    clientType: "S"
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Default"
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+        delete:
+            tags:
+                - client
+            summary: "[D] remove client info"
+            security: [] # No security
+            operationId: removeClient
+            x-swagger-router-controller: ClientController
+            parameters:
+                - in: path
+                  name: docId
+                  schema:
+                      type: string
+                      pattern: "^[a-z0-9]{24}$"
+                  description: "alphanumeric chracters of 24 bytes"
+                  required: true
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Default"
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+        patch:
+            tags:
+                - client
+            summary: "[S] change client status"
+            operationId: changeClient
+            x-swagger-router-controller: ClientController
+            parameters:
+                - in: path
+                  name: docId
+                  schema:
+                      type: string
+                      pattern: "^[a-z0-9]{24}$"
+                  description: "alphanumeric chracters of 24 bytes"
+                  required: true
+                - in: query
+                  name: activated
+                  schema:
+                      type: string
+                      enum: ["Y", "N"]
+                  description: "select status activated or not"
+                  required: true
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Default"
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+    /clients/login:
+        post:
+            tags:
+                - client
+            summary: "[C] authenticate client & issue token"
+            security: []
+            operationId: authClient
+            x-swagger-router-controller: ClientController
+            requestBody:
+                description: "client info"
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Account"
+                        examples:
+                            user:
+                                summary: "user account"
+                                value:
+                                    clientId: "user1"
+                                    clientPw: "q1w2e3R$"
+                            service:
+                                summary: "service account"
+                                value:
+                                    clientId: "service1"
+                                    clientPw: "Q!w2e3r4"
+            responses:
+                "200":
+                    description: "Success (Exist or Empty)"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Default"
+                "400":
+                    description: "Bad Request"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+                "500":
+                    description: "Internal Server Error"
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Failure"
+
+components:
+    schemas:
+        AnyValue:
+            title: any schema
+            description: Can be any value, including `null`.
+            nullable: true
+            anyOf:
+                - type: object
+                - type: string
+                - type: integer
+                - type: boolean
+                - type: array
+                  items:
+                      type: object
+
+        Client:
+            title: client schema
+            type: object
+            required:
+                - clientId
+            properties:
+                clientId:
+                    type: string
+                    pattern: "^[a-z0-9]{4,8}$"
+                    description: "client id (more then 4 chracters comprised of lower-case alpha + numeric)"
+                clientPw:
+                    type: string
+                    # pattern: '^(?=.*[A-Za-z])(?=.*0-9)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$'
+                    description: "client pw (more than 8 characters including at least 1 alpha + 1 numeric + 1 special)"
+                clientName:
+                    type: string
+                    description: "client name"
+                clientType:
+                    type: string
+                    enum: [S, U]
+                    description: "client type : S (Service), U (User)"
+                use:
+                    type: boolean
+                    description: "true or false"
+            example:
+                clientId: "user1"
+                clientPw: "q1w2e3R$"
+                clientName: "유저1"
+                clientType: "U"
+
+        Account:
+            title: account schema
+            type: object
+            required:
+                - clientId
+            properties:
+                clientId:
+                    type: string
+                    description: "client id"
+                clientPw:
+                    type: string
+                    description: "client pw"
+            example:
+                clientId: "user1"
+                clientPw: "q1w2e3R$"
+
+        Default:
+            title: default schema
+            type: object
+            properties:
+                result:
+                    type: boolean
+                data:
+                    type: object
+            example:
+                result: true
+                data: {}
+
+        DefaultList:
+            title: "default list schema"
+            type: object
+            properties:
+                result:
+                    type: boolean
+                data:
+                    type: array
+                    items:
+                        type: object
+            example:
+                result: true
+                data: []
+
+        Failure:
+            title: "error schema"
+            type: object
+            properties:
+                result:
+                    type: boolean
+                data:
+                    type: object
+            example:
+                result: false
+                data: "error message"
+
+        Status:
+            title: "status schema"
+            type: object
+            required:
+                - use
+            properties:
+                use:
+                    type: boolean
+                log:
+                    type: string
+            example:
+                use: false
+                data: "status message"
+
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer

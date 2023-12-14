@@ -1,0 +1,51 @@
+{
+	"name": "account-express",
+	"version": "0.1.0",
+	"description": "user sign-up & sign-in api service",
+	"license": "MIT",
+	"author": "toweringcloud",
+	"homepage": "https://toweringcloud.github.io/account-express",
+	"main": "main.js",
+	"keywords": [
+		"javascript",
+		"commonjs",
+		"restapi",
+		"express",
+		"mongodb"
+	],
+	"scripts": {
+		"patch": "cd node_modules/oas3-tools/dist && tar zxvf ../../../patch/oas3-tools-dist.tgz",
+		"setup": "npm install --silent && npm run patch",
+		"prestart": "npm install --silent",
+		"start": "node main.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"async": "3.2.4",
+		"axios": "1.3.3",
+		"bcrypt": "5.1.0",
+		"cls-hooked": "4.2.2",
+		"cls-rtracer": "2.6.0",
+		"compression": "1.7.4",
+		"connect": "3.7.0",
+		"connect-timeout": "1.9.0",
+		"cookie-parser": "1.4.5",
+		"cors": "2.8.5",
+		"express": "^4.18.2",
+		"express-fileupload": "1.4.0",
+		"js-yaml": "4.1.0",
+		"jsonwebtoken": "^9.0.0",
+		"method-override": "3.0.0",
+		"moment": "2.29.4",
+		"mongoose": "6.9.1",
+		"oas3-tools": "2.0.2",
+		"randomstring": "1.2.1",
+		"utf8": "3.0.0",
+		"uuid": "9.0.0",
+		"winston": "3.3.3",
+		"winston-daily-rotate-file": "4.5.5"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.21"
+	}
+}
